@@ -21,6 +21,7 @@ class Keyboard {
     const info = document.createElement("p");
     info.textContent = `Смена языка ввода - 'Shift' + 'Alt'. Сделано в ОС Linux.`;
     keyboardKeys.append(this.createKeys());
+    keyboardKeys.addEventListener('click', this.trackClick.bind(this));
     keyboard.append(keyboardKeys);
     this.textArea.classList.add("textarea");
     keyboardContainer.append(this.textArea, keyboard, info);
@@ -117,6 +118,33 @@ class Keyboard {
       }
     }
     return null;
+  }
+
+  trackClick(e) {
+    if (e.target.dataset.keyValue) {
+      switch (e.target.dataset.keyValue) {
+        default:
+          this.printKeyText(e)
+          break;
+      }
+    }
+  }
+
+  printKeyText(e) {
+    const letter = e.target.textContent;
+    const {
+      value: val,
+      selectionStart: start,
+      selectionEnd: end
+    } = this.textArea;
+    this.textArea.value = val.substring(0, start) + letter.toLowerCase() + val.substring(end);
+    this.setCursorPosition(start + 1);
+  }
+
+  setCursorPosition(position) {
+    this.textArea.focus();
+    this.textArea.selectionStart = position;
+    this.textArea.selectionEnd = position;
   }
 }
 
