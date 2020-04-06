@@ -1,0 +1,29 @@
+{
+  "name": "virtual-keyboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenyingTheTruth/virtual-keyboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DenyingTheTruth/virtual-keyboard/issues"
+  },
+  "homepage": "https://github.com/DenyingTheTruth/virtual-keyboard#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-node": "^4.0.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^2.0.2"
+  }
+}
