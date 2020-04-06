@@ -6,7 +6,7 @@ class Button {
         altText,
         code
     ) {
-        this.node = null;
+        this.keyNode = null;
         this.text = text;
         this.width = width;
         this.lang = lang;
@@ -15,18 +15,18 @@ class Button {
     }
 
     init() {
-        this.node = document.createElement('button');
-        this.node.dataset.keyValue = this.text.en;
-        this.node.classList.add('keyboard__key');
+        this.keyNode = document.createElement('button');
+        this.keyNode.dataset.keyValue = this.text.en;
+        this.keyNode.classList.add('keyboard__key');
         switch (this.width) {
             case 'md':
-                this.node.classList.add('keyboard__key_md');
+                this.keyNode.classList.add('keyboard__key_md');
                 break;
             case 'lg':
-                this.node.classList.add('keyboard__key_lg');
+                this.keyNode.classList.add('keyboard__key_lg');
                 break;
             case 'xl':
-                this.node.classList.add('keyboard__key_xl');
+                this.keyNode.classList.add('keyboard__key_xl');
                 break;
             default:
                 break;
@@ -36,7 +36,7 @@ class Button {
     }
 
     setText() {
-        this.node.innerHTML = this.text[this.lang];
+        this.keyNode.innerHTML = this.text[this.lang];
     }
 }
 

@@ -2,6 +2,7 @@ import BUTTONS from "./src/config.js";
 import Button from "./src/buttons/button.js";
 import AltButton from "./src/buttons/altButton.js";
 import LetterButton from "./src/buttons/letterButton.js";
+import * as helpers from './src/helpers.js';
 
 class Keyboard {
   constructor() {
@@ -19,11 +20,14 @@ class Keyboard {
     keyboardKeys.classList.add("keyboard__keys");
     const info = document.createElement("p");
     info.textContent = `Смена языка ввода - 'Shift' + 'Alt'. Сделано в ОС Linux.`;
-    this.textArea.classList.add("textarea");
     keyboardKeys.append(this.createKeys());
     keyboard.append(keyboardKeys);
+    this.textArea.classList.add("textarea");
     keyboardContainer.append(this.textArea, keyboard, info);
     document.body.append(keyboardContainer);
+
+    document.addEventListener('keydown', this.addActive.bind(this));
+    document.addEventListener('keyup', this.removeActive.bind(this));
   }
 
   createKeys() {
@@ -49,7 +53,7 @@ class Keyboard {
       );
       newKeyButton.init();
       this.keys.push(newKeyButton);
-      row.append(newKeyButton.node);
+      row.append(newKeyButton.keyNode);
       if (lineBreak) {
         keyboardKeys.append(row);
         row = document.createElement("div");
@@ -73,6 +77,46 @@ class Keyboard {
         break;
     }
     return button;
+  }
+
+  addActive(e) {
+    const button = this.keys.find(item => item.code === e.code);
+    if (button) {
+      if (helpers.isArrow(button.code)) {
+        button.keyNode.classList.add('active');
+      } else {
+        e.preventDefault();
+
+        if (helpers.isCaps(button.code) && e.repeat || helpers.isShift(button.code) && e.repeat || helpers.isCtrl(button.code) && e.repeat) {
+          return null;
+        }
+        if (!helpers.isCaps(button.code) && !helpers.isShift(button.code)) {
+          button.keyNode.classList.add('active');
+          button.keyNode.click();
+        }
+      }
+    }
+    return null;
+  }
+
+  removeActive(e) {
+    const button = this.keys.find(item => item.code === e.code);
+    if (button) {
+      if (helpers.isArrow(button.code)) {
+        button.keyNode.classList.remove('active');
+      } else {
+        e.preventDefault();
+
+        if (!helpers.isCaps(button.code) && !helpers.isShift(button.code)) {
+          button.keyNode.classList.remove('active');
+        }
+
+        if (helpers.isShift(button.code)) {
+          button.keyNode.click();
+        }
+      }
+    }
+    return null;
   }
 }
 

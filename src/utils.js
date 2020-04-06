@@ -1,1 +1,0 @@
-// some check function for caps & shift & etc
