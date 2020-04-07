@@ -1,4 +1,4 @@
-const BUTTONS = [{
+const KEY_BUTTONS = [{
     text: {
       en: "`",
       ru: "ё",
@@ -758,4 +758,4 @@ const BUTTONS = [{
   },
 ];
 
-export default BUTTONS;
+export default KEY_BUTTONS;

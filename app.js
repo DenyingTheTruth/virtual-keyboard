@@ -1,8 +1,7 @@
-import BUTTONS from "./src/config.js";
-import Button from "./src/buttons/button.js";
-import AltButton from "./src/buttons/altButton.js";
-import LetterButton from "./src/buttons/letterButton.js";
-import * as helpers from "./src/helpers.js";
+import KEY_BUTTONS from "./src/keyConfig.js";
+import Button from "./src/button.js";
+import AltButton from "./src/altButton.js";
+import LetterButton from "./src/letterButton.js";
 
 class Keyboard {
   constructor() {
@@ -39,7 +38,7 @@ class Keyboard {
     const keyboardKeys = document.createDocumentFragment();
     let row = document.createElement("div");
     row.classList.add("keyboard__row");
-    for (const button of BUTTONS) {
+    for (const button of KEY_BUTTONS) {
       const {
         text,
         altText,
@@ -84,15 +83,31 @@ class Keyboard {
     return button;
   }
 
+  isCaps(code) {
+    return code === 'CapsLock';
+  }
+
+  isShift(code) {
+    return ['ShiftLeft', 'ShiftRight'].includes(code);
+  }
+
+  isCtrl(code) {
+    return ['ControlRight', 'ControlLeft'].includes(code);
+  }
+
+  isArrow(code) {
+    return ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(code);
+  }
+
   addActive(e) {
     const button = this.keys.find((item) => item.code === e.code);
     if (button) {
-      if (helpers.isArrow(button.code)) {
+      if (this.isArrow(button.code)) {
         button.keyNode.classList.add("active");
       } else {
         e.preventDefault();
 
-        if (helpers.isShift(button.code)) {
+        if (this.isShift(button.code)) {
           button.keyNode.classList.add("active");
           this.shiftState = !this.shiftState;
 
@@ -101,11 +116,11 @@ class Keyboard {
           }
         }
 
-        if (helpers.isCaps(button.code)) {
+        if (this.isCaps(button.code)) {
           button.keyNode.click();
         }
 
-        if (helpers.isCtrl(button.code)) {
+        if (this.isCtrl(button.code)) {
           button.keyNode.classList.add("active");
           if (this.shiftState) {
             this.changeLanguage();
@@ -113,9 +128,9 @@ class Keyboard {
         }
 
         if (
-          !helpers.isCaps(button.code) &&
-          !helpers.isShift(button.code) &&
-          !helpers.isCtrl(button.code)
+          !this.isCaps(button.code) &&
+          !this.isShift(button.code) &&
+          !this.isCtrl(button.code)
         ) {
           button.keyNode.classList.add("active");
           button.keyNode.click();
@@ -128,12 +143,12 @@ class Keyboard {
   removeActive(e) {
     const button = this.keys.find((item) => item.code === e.code);
     if (button) {
-      if (helpers.isArrow(button.code)) {
+      if (this.isArrow(button.code)) {
         button.keyNode.classList.remove("active");
       } else {
         e.preventDefault();
 
-        if (helpers.isShift(button.code)) {
+        if (this.isShift(button.code)) {
           button.keyNode.classList.remove("active");
           this.shiftState = false;
 
@@ -147,7 +162,7 @@ class Keyboard {
           this.ctrlKeyUp = false;
         }
 
-        if (!helpers.isCaps(button.code) && !helpers.isShift(button.code)) {
+        if (!this.isCaps(button.code) && !this.isShift(button.code)) {
           button.keyNode.classList.remove("active");
         }
       }
@@ -155,49 +170,125 @@ class Keyboard {
     return null;
   }
 
-  trackClickHandler(e) {
-    if (e.target.dataset.keyValue) {
-      switch (e.target.dataset.keyValue) {
-        case "Backspace":
-          this.backspaceHandler();
-          break;
-        case "Tab":
-          this.tabHandler();
-          break;
-        case "DEL":
-          this.delHandler();
-          break;
-        case "Caps Lock":
-          this.capsHandler(e);
-          break;
-        case "ENTER":
-          this.enterHandler();
-          break;
-        case "Shift":
-          this.shiftHandler(e);
-          break;
-        case "Ctrl":
-          this.ctrlHandler();
-          break;
-        case "Alt":
-          this.altHandler();
-          break;
-        case "&#8592;":
-          this.arrowLeftHandler();
-          break;
-        case "&#8593;":
-          this.arrowUpHandler();
-          break;
-        case "&#8594;":
-          this.arrowDownHandler();
-          break;
-        case "&#8595;":
-          this.arrowRightHandler();
-          break;
-        default:
-          this.printKeyText(e);
-          break;
+  handlers = {
+    'Tab': function tabHandler() {
+      const {
+        value: val,
+        selectionStart: start,
+        selectionEnd: end,
+      } = this.textArea;
+
+      this.textArea.value = `${val.substring(0, start)}\t${val.substring(end)}`;
+
+      this.updateCursor(start + 1);
+    },
+    'Backspace': function backspaceHandler() {
+      const {
+        value: val,
+        selectionStart: start,
+        selectionEnd: end,
+      } = this.textArea;
+
+      if (start !== end) {
+        this.textArea.value = val.slice(0, start) + val.slice(end);
+        this.updateCursor(start);
+      } else if (start !== 0) {
+        this.textArea.value = val.slice(0, start - 1) + val.slice(start);
+        this.updateCursor(start - 1);
+      } else {
+        this.updateCursor(start);
       }
+    },
+    'DEL': function delHandler() {
+      const {
+        value: val,
+        selectionStart: start,
+        selectionEnd: end,
+      } = this.textArea;
+
+      if (start !== end) {
+        this.textArea.value = val.slice(0, start) + val.slice(end);
+      } else if (end !== val.length) {
+        this.textArea.value = val.slice(0, start) + val.slice(start + 1);
+      }
+
+      this.updateCursor(start);
+    },
+    'Caps Lock': function capsHandler(e) {
+      const {
+        selectionStart: start
+      } = this.textArea;
+
+      this.capsLockState = !this.capsLockState;
+      e.target.classList.toggle("active");
+
+      for (const button of this.keys) {
+        button.capsLock();
+      }
+
+      this.updateCursor(start);
+    },
+    'ENTER': function enterHandler() {
+      const {
+        value: val,
+        selectionStart: start,
+        selectionEnd: end,
+      } = this.textArea;
+
+      this.textArea.value = `${val.substring(0, start)}\n${val.substring(end)}`;
+
+      this.updateCursor(start + 1);
+    },
+    'Shift': function shiftHandler(e) {
+      e.target.classList.toggle("active");
+      this.shiftState = !this.shiftState;
+
+      for (const button of this.keys) {
+        button.shift();
+      }
+    },
+    'Ctrl': function ctrlHandler() {
+      const {
+        selectionStart: start
+      } = this.textArea;
+      if (this.shiftState) {
+        this.changeLanguage();
+      }
+
+      this.updateCursor(start);
+    },
+    'Alt': function altHandler() {
+      const {
+        selectionStart: start
+      } = this.textArea;
+
+
+      this.updateCursor(start);
+    },
+    '&#8592;': function arrowLeftHandler() {
+      const {
+        selectionStart: start,
+      } = this.textArea;
+
+
+      this.updateCursor(start - 1);
+    },
+    '&#8593;': function arrowUpHandler() {
+      this.updateCursor(0);
+    },
+    '&#8594;': function arrowRightHandler() {
+      const {
+        selectionStart: start
+      } = this.textArea;
+
+      this.updateCursor(start + 1);
+    },
+    '&#8595;': function arrowDownHandler() {
+      const {
+        value: val
+      } = this.textArea;
+
+      this.updateCursor(val.length);
     }
   }
 
@@ -207,93 +298,12 @@ class Keyboard {
     this.textArea.selectionEnd = pos;
   }
 
-  backspaceHandler() {
-    const {
-      value: val,
-      selectionStart: start,
-      selectionEnd: end,
-    } = this.textArea;
-
-    if (start !== end) {
-      this.textArea.value = val.slice(0, start) + val.slice(end);
-      this.updateCursor(start);
-    } else if (start !== 0) {
-      this.textArea.value = val.slice(0, start - 1);
-      this.updateCursor(start - 1);
-    } else {
-      this.updateCursor(start);
-    }
-  }
-
-  tabHandler() {
-    const {
-      value: val,
-      selectionStart: start,
-      selectionEnd: end,
-    } = this.textArea;
-
-    this.textArea.value = `${val.substring(0, start)}\t${val.substring(end)}`;
-
-    this.updateCursor(start + 1);
-  }
-
-  delHandler() {
-    const {
-      value: val,
-      selectionStart: start,
-      selectionEnd: end,
-    } = this.textArea;
-
-    if (start !== end) {
-      this.textArea.value = val.slice(0, start) + val.slice(end);
-    } else if (end !== val.length) {
-      this.textArea.value = val.slice(0, start) + val.slice(start + 1);
-    }
-
-    this.updateCursor(start);
-  }
-
-  capsHandler(e) {
-    const {
-      selectionStart: start
-    } = this.textArea;
-
-    this.capsLockState = !this.capsLockState;
-    e.target.classList.toggle("active");
-
-    for (const button of this.keys) {
-      button.capsLock();
-    }
-
-    this.updateCursor(start);
-  }
-
-  shiftHandler(e) {
-    e.target.classList.toggle("active");
-    this.shiftState = !this.shiftState;
-
-    for (const button of this.keys) {
-      button.shift();
-    }
-  }
-
-  ctrlHandler() {
-    const {
-      selectionStart: start
-    } = this.textArea;
-    if (this.shiftState) {
-      this.changeLanguage();
-    }
-
-    this.updateCursor(start);
-  }
-
   changeLanguage() {
     this.lang = this.lang === "en" ? "ru" : "en";
     localStorage.setItem("lang", this.lang);
     for (const button of this.keys) {
       button.setLanguage(this.lang);
-      if (!helpers.isCtrl(button.code)) {
+      if (!this.isCtrl(button.code)) {
         button.keyNode.classList.remove("active");
       }
       button.keyNode.classList.remove("capsLock");
@@ -302,16 +312,12 @@ class Keyboard {
     this.ctrlKeyUp = true;
   }
 
-  enterHandler() {
-    const {
-      value: val,
-      selectionStart: start,
-      selectionEnd: end,
-    } = this.textArea;
-
-    this.textArea.value = `${val.substring(0, start)}\n${val.substring(end)}`;
-
-    this.updateCursor(start + 1);
+  trackClickHandler(e) {
+    if (e.target.dataset.keyValue) {
+      this.handlers[e.target.dataset.keyValue] ?
+        this.handlers[e.target.dataset.keyValue].bind(this)(e) :
+        this.printKeyText(e);
+    }
   }
 
   printKeyText(e) {
