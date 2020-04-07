@@ -11,12 +11,15 @@ body {
 .keyboard-container {
   position: relative;
   z-index: -1;
-  max-width: 1020px;
+  max-width: 1024px;
   margin: 0 auto;
 }
 
 .textarea {
+  display: block;
+  max-width: 1024px;
   width: 100%;
+  margin: 0 auto;
   min-height: 200px;
   height: 35vh;
   font-size: 20px;
@@ -143,6 +146,8 @@ body {
 }
 
 .info {
+  max-width: 1024px;
+  margin: 0 auto;
   margin-top: 30px;
   color: rgb(131, 15, 15);
   font-family: 'Roboto', sans-serif;
