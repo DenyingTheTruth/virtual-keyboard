@@ -357,4 +357,5 @@ window.onload = () => {
   info.classList.add('info');
 
   document.body.append(textarea, keyboard.keyboardContainer, info);
+  textarea.focus();
 };
