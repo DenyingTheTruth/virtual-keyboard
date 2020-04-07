@@ -98,13 +98,17 @@ class Keyboard {
           button.keyNode.classList.add('active');
           this.shiftState = !this.shiftState;
 
-          for (const key in this.keys) {
-            this.keys[key].shift();
+          if (!this.capsLockState) {
+            for (const key in this.keys) {
+              this.keys[key].shift();
+            }
           }
         }
 
         if (this.isCaps(button.code)) {
-          button.keyNode.click();
+          if (!this.shiftState) {
+            button.keyNode.click();
+          }
         }
 
         if (this.isCtrl(button.code)) {
@@ -138,14 +142,16 @@ class Keyboard {
           button.keyNode.classList.remove('active');
           this.shiftState = false;
 
-          if (!this.ctrlKeyUp) {
-            for (const key in this.keys) {
-              this.keys[key].shift();
-              this.keys[key].keyNode.classList.remove('uppercase');
+          if (!this.capsLockState) {
+            if (!this.ctrlKeyUp) {
+              for (const key in this.keys) {
+                this.keys[key].shift();
+                this.keys[key].keyNode.classList.remove('uppercase');
+              }
             }
-          }
 
-          this.ctrlKeyUp = false;
+            this.ctrlKeyUp = false;
+          }
         }
 
         if (!this.isCaps(button.code) && !this.isShift(button.code)) {
