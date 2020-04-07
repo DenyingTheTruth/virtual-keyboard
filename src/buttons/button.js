@@ -45,6 +45,7 @@ class Button {
 
   setLanguage(lang) {
     this.lang = lang;
+    this.swapText();
     this.setText();
   }
 
