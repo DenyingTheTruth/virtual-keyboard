@@ -1,29 +1,32 @@
-import BUTTONS from "./src/config.js";
-import Button from "./src/buttons/button.js";
-import AltButton from "./src/buttons/altButton.js";
-import LetterButton from "./src/buttons/letterButton.js";
+import BUTTONS from './src/config.js';
+import Button from './src/buttons/button.js';
+import AltButton from './src/buttons/altButton.js';
+import LetterButton from './src/buttons/letterButton.js';
 import * as helpers from './src/helpers.js';
 
 class Keyboard {
   constructor() {
     this.keys = [];
-    this.lang = "en";
-    this.textArea = document.createElement("textarea");
+    this.lang = localStorage.getItem('lang') || 'en';
+    this.textArea = document.createElement('textarea');
+    this.capsLockState = false;
+    this.shiftState = false;
   }
 
   init() {
-    const keyboardContainer = document.createElement("div");
-    keyboardContainer.classList.add("keyboard-container");
-    const keyboard = document.createElement("div");
-    keyboard.classList.add("keyboard");
-    const keyboardKeys = document.createElement("div");
-    keyboardKeys.classList.add("keyboard__keys");
-    const info = document.createElement("p");
-    info.textContent = `Смена языка ввода - 'Shift' + 'Alt'. Сделано в ОС Linux.`;
+    const keyboardContainer = document.createElement('div');
+    keyboardContainer.classList.add('keyboard-container');
+    const keyboard = document.createElement('div');
+    keyboard.classList.add('keyboard');
+    const keyboardKeys = document.createElement('div');
+    keyboardKeys.classList.add('keyboard__keys');
+    const info = document.createElement('p');
+    info.innerHTML = `Change language - 'Shift' + 'Ctrl'. <br> Made with OS Linux (Ubuntu 18.04 LTS).`;
+    info.classList.add('info');
     keyboardKeys.append(this.createKeys());
-    keyboardKeys.addEventListener('click', this.trackClick.bind(this));
+    keyboardKeys.addEventListener('click', this.trackClickHandler.bind(this));
     keyboard.append(keyboardKeys);
-    this.textArea.classList.add("textarea");
+    this.textArea.classList.add('textarea');
     keyboardContainer.append(this.textArea, keyboard, info);
     document.body.append(keyboardContainer);
 
@@ -33,8 +36,8 @@ class Keyboard {
 
   createKeys() {
     const keyboardKeys = document.createDocumentFragment();
-    let row = document.createElement("div");
-    row.classList.add("keyboard__row");
+    let row = document.createElement('div');
+    row.classList.add('keyboard__row');
     for (const button of BUTTONS) {
       const {
         text,
@@ -57,8 +60,8 @@ class Keyboard {
       row.append(newKeyButton.keyNode);
       if (lineBreak) {
         keyboardKeys.append(row);
-        row = document.createElement("div");
-        row.classList.add("keyboard__row");
+        row = document.createElement('div');
+        row.classList.add('keyboard__row');
       }
     }
     return keyboardKeys;
@@ -67,10 +70,10 @@ class Keyboard {
   createButton(text, width, lang, altText, type, code) {
     let button;
     switch (type) {
-      case "alternative":
+      case 'alternative':
         button = new AltButton(text, width, lang, altText, code);
         break;
-      case "functional":
+      case 'functional':
         button = new Button(text, width, lang, altText, code);
         break;
       default:
@@ -88,8 +91,17 @@ class Keyboard {
       } else {
         e.preventDefault();
 
-        if (helpers.isCaps(button.code) && e.repeat || helpers.isShift(button.code) && e.repeat || helpers.isCtrl(button.code) && e.repeat) {
-          return null;
+        if (helpers.isShift(button.code)) {
+          button.keyNode.classList.add('active');
+          this.shiftState = !this.shiftState;
+
+          for (const key of this.keys) {
+            key.shift();
+          }
+        }
+
+        if (helpers.isCaps(button.code)) {
+          button.keyNode.click();
         }
         if (!helpers.isCaps(button.code) && !helpers.isShift(button.code)) {
           button.keyNode.classList.add('active');
@@ -113,16 +125,57 @@ class Keyboard {
         }
 
         if (helpers.isShift(button.code)) {
-          button.keyNode.click();
+          button.keyNode.classList.remove('active');
+          this.shiftState = false;
+
+          for (const key of this.keys) {
+            key.keyNode.classList.remove('capsLock');
+          }
         }
       }
     }
     return null;
   }
 
-  trackClick(e) {
+  trackClickHandler(e) {
     if (e.target.dataset.keyValue) {
       switch (e.target.dataset.keyValue) {
+        case 'Backspace':
+          this.backspaceHandler();
+          break;
+        case 'Tab':
+          this.tabHandler();
+          break;
+        case 'DEL':
+          this.delHandler();
+          break;
+        case 'Caps Lock':
+          this.capsHandler(e);
+          break;
+        case 'ENTER':
+          this.enterHandler();
+          break;
+        case 'Shift':
+          this.shiftHandler(e);
+          break;
+        case 'Ctrl':
+          this.ctrlHandler(e);
+          break;
+        case 'Alt':
+          this.altHandler();
+          break;
+        case '&#8592;':
+          this.arrowLeftHandler();
+          break;
+        case '&#8593;':
+          this.arrowUpHandler();
+          break;
+        case '&#8594;':
+          this.arrowDownHandler();
+          break;
+        case '&#8595;':
+          this.arrowRightHandler();
+          break;
         default:
           this.printKeyText(e)
           break;
@@ -130,21 +183,136 @@ class Keyboard {
     }
   }
 
-  printKeyText(e) {
-    const letter = e.target.textContent;
+  updateCursor(pos) {
+    this.textArea.focus();
+    this.textArea.selectionStart = pos;
+    this.textArea.selectionEnd = pos;
+  }
+
+  backspaceHandler() {
     const {
       value: val,
       selectionStart: start,
       selectionEnd: end
     } = this.textArea;
-    this.textArea.value = val.substring(0, start) + letter.toLowerCase() + val.substring(end);
-    this.setCursorPosition(start + 1);
+
+    if (start !== end) {
+      this.textArea.value = val.slice(0, start) + val.slice(end);
+      this.updateCursor(start);
+    } else if (start !== 0) {
+      this.textArea.value = val.slice(0, start - 1);
+      this.updateCursor(start - 1);
+    } else {
+      this.updateCursor(start);
+    }
   }
 
-  setCursorPosition(position) {
-    this.textArea.focus();
-    this.textArea.selectionStart = position;
-    this.textArea.selectionEnd = position;
+  tabHandler() {
+    const {
+      value: val,
+      selectionStart: start,
+      selectionEnd: end
+    } = this.textArea;
+
+    this.textArea.value = `${val.substring(0, start)}\t${val.substring(end)}`;
+
+    this.updateCursor(start + 1);
+  }
+
+  delHandler() {
+    const {
+      value: val,
+      selectionStart: start,
+      selectionEnd: end
+    } = this.textArea;
+
+    if (start !== end) {
+      this.textArea.value = val.slice(0, start) + val.slice(end);
+    } else if (end !== val.length) {
+      this.textArea.value = val.slice(0, start) + val.slice(start + 1);
+    }
+
+    this.updateCursor(start);
+  }
+
+  capsHandler(e) {
+    const {
+      selectionStart: start
+    } = this.textArea;
+
+    this.capsLockState = !this.capsLockState;
+    e.target.classList.toggle('active');
+
+    for (const button of this.keys) {
+      button.capsLock();
+    }
+
+    this.updateCursor(start);
+  }
+
+  shiftHandler(e) {
+    e.target.classList.toggle('active');
+    this.shiftState = !this.shiftState;
+
+    for (const button of this.keys) {
+      button.shift();
+    }
+  }
+
+  ctrlHandler(e) {
+    const {
+      selectionStart: start
+    } = this.textArea;
+    e.target.classList.toggle('active');
+    if (this.shiftState) {
+      this.changeLanguage(e);
+    }
+
+    this.updateCursor(start);
+  }
+
+  changeLanguage(e) {
+    this.lang = this.lang === 'en' ? 'ru' : 'en';
+    localStorage.setItem('lang', this.lang);
+    for (const button of this.keys) {
+      button.keyNode.classList.remove('active');
+      button.keyNode.classList.remove('capsLock');
+      button.setLanguage(this.lang);
+      if (button.type === 'alternative') {
+        button.swapText();
+      }
+    }
+    this.shiftState = false;
+  }
+
+  enterHandler() {
+    const {
+      value: val,
+      selectionStart: start,
+      selectionEnd: end
+    } = this.textArea;
+
+    this.textArea.value = `${val.substring(0, start)}\n${val.substring(end)}`;
+
+    this.updateCursor(start + 1);
+  }
+
+  printKeyText(e) {
+    const {
+      value: val,
+      selectionStart: start,
+      selectionEnd: end
+    } = this.textArea;
+
+    const letter = e.target.textContent;
+
+    if (this.capsLockState !== this.shiftState) {
+      this.textArea.value = val.substring(0, start) + letter.toUpperCase() + val.substring(end);
+    } else {
+      this.textArea.value = val.substring(0, start) + letter.toLowerCase() + val.substring(end);
+    }
+
+    this.updateCursor(start + 1);
   }
 }
 
