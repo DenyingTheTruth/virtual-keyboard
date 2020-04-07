@@ -129,6 +129,7 @@ class Keyboard {
           this.shiftState = false;
 
           for (const key of this.keys) {
+            key.shift();
             key.keyNode.classList.remove('capsLock');
           }
         }
@@ -276,6 +277,7 @@ class Keyboard {
     localStorage.setItem('lang', this.lang);
     for (const button of this.keys) {
       button.keyNode.classList.remove('active');
+      button.shift();
       button.keyNode.classList.remove('capsLock');
       button.setLanguage(this.lang);
       if (button.type === 'alternative') {
