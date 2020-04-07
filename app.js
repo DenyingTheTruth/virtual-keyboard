@@ -21,7 +21,7 @@ class Keyboard {
     const keyboardKeys = document.createElement("div");
     keyboardKeys.classList.add("keyboard__keys");
     const info = document.createElement("p");
-    info.innerHTML = `Change language - 'Shift' + 'Ctrl'. <br> Made with OS Linux (Ubuntu 18.04 LTS).`;
+    info.innerHTML = `Change language - 'Shift' + 'Ctrl'.<br> <strong>Notes:</strong> Key 'Shift' sticks on mouse click for change language <br> Made with OS Linux (Ubuntu 18.04 LTS).`;
     info.classList.add("info");
     keyboardKeys.append(this.createKeys());
     keyboardKeys.addEventListener("click", this.trackClickHandler.bind(this));
@@ -289,6 +289,15 @@ class Keyboard {
       } = this.textArea;
 
       this.updateCursor(val.length);
+    },
+    'Win': function winHandler() {
+      const {
+        selectionStart: start
+      } = this.textArea;
+
+      alert('You Win, kek 🥳')
+
+      this.updateCursor(start);
     }
   }
 
