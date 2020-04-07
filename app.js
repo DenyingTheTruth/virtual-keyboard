@@ -21,20 +21,21 @@ class Keyboard {
     const keyboardKeys = document.createElement("div");
     keyboardKeys.classList.add("keyboard__keys");
     const info = document.createElement("p");
-    info.innerHTML = `Change language - 'Shift' + 'Ctrl'.<br> <strong>Notes:</strong> Key 'Shift' sticks on mouse click for change language <br> Made with OS Linux (Ubuntu 18.04 LTS).`;
+    info.innerHTML = `Change language - 'Shift' + 'Ctrl'. <br> <strong>Notes:</strong> Key 'Shift' sticks on mouse click for change language <br> Made with OS Linux (Ubuntu 18.04 LTS).`;
     info.classList.add("info");
     keyboardKeys.append(this.createKeys());
-    keyboardKeys.addEventListener("click", this.trackClickHandler.bind(this));
+    keyboardKeys.addEventListener("click", this.trackClickHandler);
     keyboard.append(keyboardKeys);
     this.textArea.classList.add("textarea");
     keyboardContainer.append(this.textArea, keyboard, info);
     document.body.append(keyboardContainer);
 
-    document.addEventListener("keydown", this.addActive.bind(this));
-    document.addEventListener("keyup", this.removeActive.bind(this));
+    keyboardContainer.addEventListener("keydown", this.addActive);
+    keyboardContainer.addEventListener("keyup", this.removeActive);
+    this.textArea.focus();
   }
 
-  createKeys() {
+  createKeys = () => {
     const keyboardKeys = document.createDocumentFragment();
     let row = document.createElement("div");
     row.classList.add("keyboard__row");
@@ -67,39 +68,34 @@ class Keyboard {
     return keyboardKeys;
   }
 
-  createKeyButton(text, width, lang, altText, type, code) {
-    let button;
+  createKeyButton = (text, width, lang, altText, type, code) => {
     switch (type) {
       case "alternative":
-        button = new AltButton(text, width, lang, altText, code);
-        break;
+        return new AltButton(text, width, lang, altText, code);
       case "functional":
-        button = new Button(text, width, lang, altText, code);
-        break;
+        return new Button(text, width, lang, altText, code);
       default:
-        button = new LetterButton(text, width, lang, altText, code);
-        break;
+        return new LetterButton(text, width, lang, altText, code);
     }
-    return button;
   }
 
-  isCaps(code) {
-    return code === 'CapsLock';
+  isCaps = (code) => {
+    return code === "CapsLock";
   }
 
-  isShift(code) {
-    return ['ShiftLeft', 'ShiftRight'].includes(code);
+  isShift = (code) => {
+    return ["ShiftLeft", "ShiftRight"].includes(code);
   }
 
-  isCtrl(code) {
-    return ['ControlRight', 'ControlLeft'].includes(code);
+  isCtrl = (code) => {
+    return ["ControlRight", "ControlLeft"].includes(code);
   }
 
-  isArrow(code) {
-    return ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(code);
+  isArrow = (code) => {
+    return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(code);
   }
 
-  addActive(e) {
+  addActive = (e) => {
     const button = this.keys.find((item) => item.code === e.code);
     if (button) {
       if (this.isArrow(button.code)) {
@@ -140,7 +136,7 @@ class Keyboard {
     return null;
   }
 
-  removeActive(e) {
+  removeActive = (e) => {
     const button = this.keys.find((item) => item.code === e.code);
     if (button) {
       if (this.isArrow(button.code)) {
@@ -171,7 +167,7 @@ class Keyboard {
   }
 
   handlers = {
-    'Tab': function tabHandler() {
+    Tab: () => {
       const {
         value: val,
         selectionStart: start,
@@ -182,7 +178,7 @@ class Keyboard {
 
       this.updateCursor(start + 1);
     },
-    'Backspace': function backspaceHandler() {
+    Backspace: () => {
       const {
         value: val,
         selectionStart: start,
@@ -199,7 +195,7 @@ class Keyboard {
         this.updateCursor(start);
       }
     },
-    'DEL': function delHandler() {
+    DEL: () => {
       const {
         value: val,
         selectionStart: start,
@@ -214,7 +210,7 @@ class Keyboard {
 
       this.updateCursor(start);
     },
-    'Caps Lock': function capsHandler(e) {
+    "Caps Lock": (e) => {
       const {
         selectionStart: start
       } = this.textArea;
@@ -228,7 +224,7 @@ class Keyboard {
 
       this.updateCursor(start);
     },
-    'ENTER': function enterHandler() {
+    ENTER: () => {
       const {
         value: val,
         selectionStart: start,
@@ -239,7 +235,7 @@ class Keyboard {
 
       this.updateCursor(start + 1);
     },
-    'Shift': function shiftHandler(e) {
+    Shift: (e) => {
       e.target.classList.toggle("active");
       this.shiftState = !this.shiftState;
 
@@ -247,7 +243,7 @@ class Keyboard {
         button.shift();
       }
     },
-    'Ctrl': function ctrlHandler() {
+    Ctrl: () => {
       const {
         selectionStart: start
       } = this.textArea;
@@ -257,57 +253,55 @@ class Keyboard {
 
       this.updateCursor(start);
     },
-    'Alt': function altHandler() {
+    Alt: () => {
       const {
         selectionStart: start
       } = this.textArea;
 
-
       this.updateCursor(start);
     },
-    '&#8592;': function arrowLeftHandler() {
+    "&#8592;": () => {
       const {
-        selectionStart: start,
+        selectionStart: start
       } = this.textArea;
-
 
       this.updateCursor(start - 1);
     },
-    '&#8593;': function arrowUpHandler() {
+    "&#8593;": () => {
       this.updateCursor(0);
     },
-    '&#8594;': function arrowRightHandler() {
+    "&#8594;": () => {
       const {
         selectionStart: start
       } = this.textArea;
 
       this.updateCursor(start + 1);
     },
-    '&#8595;': function arrowDownHandler() {
+    "&#8595;": () => {
       const {
         value: val
       } = this.textArea;
 
       this.updateCursor(val.length);
     },
-    'Win': function winHandler() {
+    Win: () => {
       const {
         selectionStart: start
       } = this.textArea;
 
-      alert('You Win, kek 🥳')
+      alert("You Win, kek 🥳");
 
       this.updateCursor(start);
-    }
-  }
+    },
+  };
 
-  updateCursor(pos) {
+  updateCursor = (pos) => {
     this.textArea.focus();
     this.textArea.selectionStart = pos;
     this.textArea.selectionEnd = pos;
   }
 
-  changeLanguage() {
+  changeLanguage = () => {
     this.lang = this.lang === "en" ? "ru" : "en";
     localStorage.setItem("lang", this.lang);
     for (const button of this.keys) {
@@ -321,15 +315,15 @@ class Keyboard {
     this.ctrlKeyUp = true;
   }
 
-  trackClickHandler(e) {
+  trackClickHandler = (e) => {
     if (e.target.dataset.keyValue) {
       this.handlers[e.target.dataset.keyValue] ?
-        this.handlers[e.target.dataset.keyValue].bind(this)(e) :
+        this.handlers[e.target.dataset.keyValue](e) :
         this.printKeyText(e);
     }
   }
 
-  printKeyText(e) {
+  printKeyText = (e) => {
     const {
       value: val,
       selectionStart: start,
