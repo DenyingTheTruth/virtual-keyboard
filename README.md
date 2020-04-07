@@ -1,7 +1,8 @@
 # virtual-keyboard
 
-[DEPLOY KEYBOARD](https://denyingthetruth.github.io/virtual-keyboard/)
-[TASK](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/codejam-virtual-keyboard.md)
+## [DEPLOY KEYBOARD](https://denyingthetruth.github.io/virtual-keyboard/)
+
+## [TASK](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/codejam-virtual-keyboard.md)
 
 Реализовано:
 
