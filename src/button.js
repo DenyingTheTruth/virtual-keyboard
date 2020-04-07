@@ -6,16 +6,12 @@ class Button {
     altText,
     code
   ) {
-    this.keyNode = null;
+    this.keyNode = document.createElement('button');
     this.text = text;
     this.width = width;
     this.lang = lang;
     this.altText = altText;
     this.code = code;
-  }
-
-  init() {
-    this.keyNode = document.createElement('button');
     this.keyNode.dataset.keyValue = this.text.en;
     this.keyNode.classList.add('keyboard__key');
     switch (this.width) {

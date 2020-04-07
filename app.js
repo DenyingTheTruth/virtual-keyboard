@@ -5,66 +5,62 @@ import LetterButton from "./src/letterButton.js";
 
 class Keyboard {
   constructor() {
-    this.keys = [];
+    this.keys = {};
     this.lang = localStorage.getItem("lang") || "en";
     this.textArea = document.createElement("textarea");
     this.capsLockState = false;
     this.shiftState = false;
     this.ctrlKeyUp = false;
-  }
 
-  init() {
-    const keyboardContainer = document.createElement("div");
-    keyboardContainer.classList.add("keyboard-container");
+    this.keyboardContainer = document.createElement("div");
+    this.keyboardContainer.classList.add("keyboard-container");
+
     const keyboard = document.createElement("div");
     keyboard.classList.add("keyboard");
+
     const keyboardKeys = document.createElement("div");
     keyboardKeys.classList.add("keyboard__keys");
+
     const info = document.createElement("p");
     info.innerHTML = `Change language - 'Shift' + 'Ctrl'. <br> <strong>Notes:</strong> Key 'Shift' sticks on mouse click for change language <br> Made with OS Linux (Ubuntu 18.04 LTS).`;
     info.classList.add("info");
+
     keyboardKeys.append(this.createKeys());
     keyboardKeys.addEventListener("click", this.trackClickHandler);
     keyboard.append(keyboardKeys);
     this.textArea.classList.add("textarea");
-    keyboardContainer.append(this.textArea, keyboard, info);
-    document.body.append(keyboardContainer);
+    this.keyboardContainer.append(this.textArea, keyboard, info);
 
-    keyboardContainer.addEventListener("keydown", this.addActive);
-    keyboardContainer.addEventListener("keyup", this.removeActive);
-    this.textArea.focus();
+    this.keyboardContainer.addEventListener("keydown", this.addActive);
+    this.keyboardContainer.addEventListener("keyup", this.removeActive);
   }
 
   createKeys = () => {
     const keyboardKeys = document.createDocumentFragment();
-    let row = document.createElement("div");
-    row.classList.add("keyboard__row");
-    for (const button of KEY_BUTTONS) {
-      const {
-        text,
-        altText,
-        code,
-        width,
-        lineBreak,
-        type
-      } = button;
-      const newKeyButton = this.createKeyButton(
-        text,
-        width,
-        this.lang,
-        altText,
-        type,
-        code
-      );
-      newKeyButton.init();
-      this.keys.push(newKeyButton);
-      row.append(newKeyButton.keyNode);
-      if (lineBreak) {
-        keyboardKeys.append(row);
-        row = document.createElement("div");
-        row.classList.add("keyboard__row");
+    KEY_BUTTONS.forEach(rowButtonItems => {
+      let row = document.createElement("div");
+      row.classList.add("keyboard__row");
+      for (const button of rowButtonItems) {
+        const {
+          text,
+          altText,
+          code,
+          width,
+          type
+        } = button;
+        const newKeyButton = this.createKeyButton(
+          text,
+          width,
+          this.lang,
+          altText,
+          type,
+          code
+        );
+        this.keys[newKeyButton.code] = newKeyButton;
+        row.append(newKeyButton.keyNode);
       }
-    }
+      keyboardKeys.append(row);
+    })
     return keyboardKeys;
   }
 
@@ -96,7 +92,7 @@ class Keyboard {
   }
 
   addActive = (e) => {
-    const button = this.keys.find((item) => item.code === e.code);
+    const button = this.keys[e.code];
     if (button) {
       if (this.isArrow(button.code)) {
         button.keyNode.classList.add("active");
@@ -107,8 +103,8 @@ class Keyboard {
           button.keyNode.classList.add("active");
           this.shiftState = !this.shiftState;
 
-          for (const key of this.keys) {
-            key.shift();
+          for (const key in this.keys) {
+            this.keys[key].shift();
           }
         }
 
@@ -133,11 +129,10 @@ class Keyboard {
         }
       }
     }
-    return null;
   }
 
   removeActive = (e) => {
-    const button = this.keys.find((item) => item.code === e.code);
+    const button = this.keys[e.code];
     if (button) {
       if (this.isArrow(button.code)) {
         button.keyNode.classList.remove("active");
@@ -149,9 +144,9 @@ class Keyboard {
           this.shiftState = false;
 
           if (!this.ctrlKeyUp) {
-            for (const key of this.keys) {
-              key.shift();
-              key.keyNode.classList.remove("capsLock");
+            for (const key in this.keys) {
+              this.keys[key].shift();
+              this.keys[key].keyNode.classList.remove("uppercase");
             }
           }
 
@@ -163,7 +158,6 @@ class Keyboard {
         }
       }
     }
-    return null;
   }
 
   handlers = {
@@ -218,8 +212,8 @@ class Keyboard {
       this.capsLockState = !this.capsLockState;
       e.target.classList.toggle("active");
 
-      for (const button of this.keys) {
-        button.capsLock();
+      for (const button in this.keys) {
+        this.keys[button].capsLock();
       }
 
       this.updateCursor(start);
@@ -239,8 +233,8 @@ class Keyboard {
       e.target.classList.toggle("active");
       this.shiftState = !this.shiftState;
 
-      for (const button of this.keys) {
-        button.shift();
+      for (const button in this.keys) {
+        this.keys[button].shift();
       }
     },
     Ctrl: () => {
@@ -304,40 +298,48 @@ class Keyboard {
   changeLanguage = () => {
     this.lang = this.lang === "en" ? "ru" : "en";
     localStorage.setItem("lang", this.lang);
-    for (const button of this.keys) {
-      button.setLanguage(this.lang);
-      if (!this.isCtrl(button.code)) {
-        button.keyNode.classList.remove("active");
+    for (const button in this.keys) {
+      this.keys[button].setLanguage(this.lang);
+
+      if (!this.isCtrl(this.keys[button].code)) {
+        this.keys[button].keyNode.classList.remove("active");
       }
-      button.keyNode.classList.remove("capsLock");
+
+      this.keys[button].keyNode.classList.remove("uppercase");
     }
     this.shiftState = false;
     this.ctrlKeyUp = true;
   }
 
   trackClickHandler = (e) => {
-    if (e.target.dataset.keyValue) {
-      this.handlers[e.target.dataset.keyValue] ?
-        this.handlers[e.target.dataset.keyValue](e) :
-        this.printKeyText(e);
+    const {
+      dataset: {
+        keyValue: keyValue
+      },
+      textContent
+    } = e.target;
+    if (keyValue) {
+      if (this.handlers[keyValue]) {
+        this.handlers[keyValue](e);
+      } else {
+        this.printKeyText(textContent);
+      }
     }
   }
 
-  printKeyText = (e) => {
+  printKeyText = (text) => {
     const {
       value: val,
       selectionStart: start,
       selectionEnd: end,
     } = this.textArea;
 
-    const letter = e.target.textContent;
-
     if (this.capsLockState !== this.shiftState) {
       this.textArea.value =
-        val.substring(0, start) + letter.toUpperCase() + val.substring(end);
+        val.substring(0, start) + text.toUpperCase() + val.substring(end);
     } else {
       this.textArea.value =
-        val.substring(0, start) + letter.toLowerCase() + val.substring(end);
+        val.substring(0, start) + text.toLowerCase() + val.substring(end);
     }
 
     this.updateCursor(start + 1);
@@ -346,5 +348,5 @@ class Keyboard {
 
 window.onload = () => {
   const keyboard = new Keyboard();
-  keyboard.init();
+  document.body.append(keyboard.keyboardContainer);
 };

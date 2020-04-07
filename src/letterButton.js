@@ -12,11 +12,11 @@ class LetterButton extends Button {
   }
 
   capsLock() {
-    this.keyNode.classList.toggle('capsLock');
+    this.keyNode.classList.toggle('uppercase');
   }
 
   shift() {
-    this.keyNode.classList.toggle('capsLock');
+    this.keyNode.classList.toggle('uppercase');
     this.swapText();
     this.setText();
   }
