@@ -160,10 +160,6 @@ const KEY_BUTTONS = [
         en: "Backspace",
         ru: "Backspace",
       },
-      altText: {
-        en: "Backspace",
-        ru: "Backspace",
-      },
       width: "lg",
       code: "Backspace",
       type: "functional"
@@ -171,10 +167,6 @@ const KEY_BUTTONS = [
   ],
   [{
       text: {
-        en: "Tab",
-        ru: "Tab",
-      },
-      altText: {
         en: "Tab",
         ru: "Tab",
       },
@@ -186,18 +178,10 @@ const KEY_BUTTONS = [
         en: "q",
         ru: "й",
       },
-      altText: {
-        en: "q",
-        ru: "й",
-      },
       code: "KeyQ",
     },
     {
       text: {
-        en: "w",
-        ru: "ц",
-      },
-      altText: {
         en: "w",
         ru: "ц",
       },
@@ -208,18 +192,10 @@ const KEY_BUTTONS = [
         en: "e",
         ru: "у",
       },
-      altText: {
-        en: "e",
-        ru: "у",
-      },
       code: "KeyE",
     },
     {
       text: {
-        en: "r",
-        ru: "к",
-      },
-      altText: {
         en: "r",
         ru: "к",
       },
@@ -230,18 +206,10 @@ const KEY_BUTTONS = [
         en: "t",
         ru: "е",
       },
-      altText: {
-        en: "t",
-        ru: "е",
-      },
       code: "KeyT",
     },
     {
       text: {
-        en: "y",
-        ru: "н",
-      },
-      altText: {
         en: "y",
         ru: "н",
       },
@@ -252,18 +220,10 @@ const KEY_BUTTONS = [
         en: "u",
         ru: "г",
       },
-      altText: {
-        en: "u",
-        ru: "г",
-      },
       code: "KeyU",
     },
     {
       text: {
-        en: "i",
-        ru: "ш",
-      },
-      altText: {
         en: "i",
         ru: "ш",
       },
@@ -274,18 +234,10 @@ const KEY_BUTTONS = [
         en: "o",
         ru: "щ",
       },
-      altText: {
-        en: "o",
-        ru: "щ",
-      },
       code: "KeyO",
     },
     {
       text: {
-        en: "p",
-        ru: "з",
-      },
-      altText: {
         en: "p",
         ru: "з",
       },
@@ -296,20 +248,12 @@ const KEY_BUTTONS = [
         en: "[",
         ru: "х",
       },
-      altText: {
-        en: "{",
-        ru: "х",
-      },
       code: "BracketLeft",
       type: "alternative",
     },
     {
       text: {
         en: "]",
-        ru: "ъ",
-      },
-      altText: {
-        en: "}",
         ru: "ъ",
       },
       code: "BracketRight",
@@ -333,20 +277,12 @@ const KEY_BUTTONS = [
         en: "DEL",
         ru: "DEL",
       },
-      altText: {
-        en: "DEL",
-        ru: "DEL",
-      },
       code: "Delete",
       type: "functional"
     }
   ],
   [{
       text: {
-        en: "Caps Lock",
-        ru: "Caps Lock",
-      },
-      altText: {
         en: "Caps Lock",
         ru: "Caps Lock",
       },
@@ -359,18 +295,10 @@ const KEY_BUTTONS = [
         en: "a",
         ru: "ф",
       },
-      altText: {
-        en: "a",
-        ru: "ф",
-      },
       code: "KeyA",
     },
     {
       text: {
-        en: "s",
-        ru: "ы",
-      },
-      altText: {
         en: "s",
         ru: "ы",
       },
@@ -381,18 +309,10 @@ const KEY_BUTTONS = [
         en: "d",
         ru: "в",
       },
-      altText: {
-        en: "d",
-        ru: "в",
-      },
       code: "KeyD",
     },
     {
       text: {
-        en: "f",
-        ru: "а",
-      },
-      altText: {
         en: "f",
         ru: "а",
       },
@@ -403,18 +323,10 @@ const KEY_BUTTONS = [
         en: "g",
         ru: "п",
       },
-      altText: {
-        en: "g",
-        ru: "п",
-      },
       code: "KeyG",
     },
     {
       text: {
-        en: "h",
-        ru: "р",
-      },
-      altText: {
         en: "h",
         ru: "р",
       },
@@ -425,18 +337,10 @@ const KEY_BUTTONS = [
         en: "j",
         ru: "о",
       },
-      altText: {
-        en: "j",
-        ru: "о",
-      },
       code: "KeyJ",
     },
     {
       text: {
-        en: "k",
-        ru: "л",
-      },
-      altText: {
         en: "k",
         ru: "л",
       },
@@ -447,19 +351,11 @@ const KEY_BUTTONS = [
         en: "l",
         ru: "д",
       },
-      altText: {
-        en: "l",
-        ru: "д",
-      },
       code: "KeyL",
     },
     {
       text: {
         en: ";",
-        ru: "ж",
-      },
-      altText: {
-        en: ":",
         ru: "ж",
       },
       code: "Semicolon",
@@ -483,10 +379,6 @@ const KEY_BUTTONS = [
         ru: "ENTER",
       },
       width: "lg",
-      altText: {
-        en: "ENTER",
-        ru: "ENTER",
-      },
       code: "Enter",
       type: "functional"
     }
@@ -497,19 +389,11 @@ const KEY_BUTTONS = [
         ru: "Shift",
       },
       width: "lg",
-      altText: {
-        en: "Shift",
-        ru: "Shift",
-      },
       code: "ShiftLeft",
       type: "functional",
     },
     {
       text: {
-        en: "z",
-        ru: "я",
-      },
-      altText: {
         en: "z",
         ru: "я",
       },
@@ -520,18 +404,10 @@ const KEY_BUTTONS = [
         en: "x",
         ru: "ч",
       },
-      altText: {
-        en: "x",
-        ru: "ч",
-      },
       code: "KeyX",
     },
     {
       text: {
-        en: "c",
-        ru: "с",
-      },
-      altText: {
         en: "c",
         ru: "с",
       },
@@ -542,18 +418,10 @@ const KEY_BUTTONS = [
         en: "v",
         ru: "м",
       },
-      altText: {
-        en: "v",
-        ru: "м",
-      },
       code: "KeyV",
     },
     {
       text: {
-        en: "b",
-        ru: "и",
-      },
-      altText: {
         en: "b",
         ru: "и",
       },
@@ -564,18 +432,10 @@ const KEY_BUTTONS = [
         en: "n",
         ru: "т",
       },
-      altText: {
-        en: "n",
-        ru: "т",
-      },
       code: "KeyN",
     },
     {
       text: {
-        en: "m",
-        ru: "ь",
-      },
-      altText: {
         en: "m",
         ru: "ь",
       },
@@ -622,19 +482,11 @@ const KEY_BUTTONS = [
         en: "&#8593;",
         ru: "&#8593;",
       },
-      altText: {
-        en: "&#8593;",
-        ru: "&#8593;",
-      },
       code: "ArrowUp",
       type: "functional",
     },
     {
       text: {
-        en: "Shift",
-        ru: "Shift",
-      },
-      altText: {
         en: "Shift",
         ru: "Shift",
       },
@@ -648,20 +500,12 @@ const KEY_BUTTONS = [
         en: "Ctrl",
         ru: "Ctrl",
       },
-      altText: {
-        en: "Ctrl",
-        ru: "Ctrl",
-      },
       code: "ControlLeft",
       type: "functional",
       width: "md",
     },
     {
       text: {
-        en: "Win",
-        ru: "Win",
-      },
-      altText: {
         en: "Win",
         ru: "Win",
       },
@@ -675,10 +519,6 @@ const KEY_BUTTONS = [
         ru: "Alt",
       },
       width: "md",
-      altText: {
-        en: "Alt",
-        ru: "Alt",
-      },
       code: "AltLeft",
       type: "functional",
     },
@@ -687,19 +527,11 @@ const KEY_BUTTONS = [
         en: " ",
         ru: " ",
       },
-      altText: {
-        en: " ",
-        ru: " ",
-      },
       code: "Space",
       width: "xl",
     },
     {
       text: {
-        en: "Alt",
-        ru: "Alt",
-      },
-      altText: {
         en: "Alt",
         ru: "Alt",
       },
@@ -712,19 +544,11 @@ const KEY_BUTTONS = [
         en: "&#8592;",
         ru: "&#8592;",
       },
-      altText: {
-        en: "&#8592;",
-        ru: "&#8592;",
-      },
       code: "ArrowLeft",
       type: "functional",
     },
     {
       text: {
-        en: "&#8595;",
-        ru: "&#8595;",
-      },
-      altText: {
         en: "&#8595;",
         ru: "&#8595;",
       },
@@ -736,19 +560,11 @@ const KEY_BUTTONS = [
         en: "&#8594;",
         ru: "&#8594;",
       },
-      altText: {
-        en: "&#8594;",
-        ru: "&#8594;",
-      },
       code: "ArrowRight",
       type: "functional",
     },
     {
       text: {
-        en: "Ctrl",
-        ru: "Ctrl",
-      },
-      altText: {
         en: "Ctrl",
         ru: "Ctrl",
       },

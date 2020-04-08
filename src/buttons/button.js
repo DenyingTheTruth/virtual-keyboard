@@ -1,8 +1,10 @@
+import * as CONSTANTS from '../constants/constants.js';
+
 class Button {
   constructor(
     text,
     width,
-    lang = 'en',
+    lang = CONSTANTS.EN,
     altText,
     code
   ) {
@@ -10,7 +12,7 @@ class Button {
     this.text = text;
     this.width = width;
     this.lang = lang;
-    this.altText = altText;
+    this.altText = altText ? altText : text;
     this.code = code;
     this.keyNode.dataset.keyValue = this.text.en;
     this.keyNode.classList.add('keyboard__key');

@@ -1,12 +1,13 @@
+import * as CONSTANTS from '../constants/constants.js';
 import Button from './button.js';
 
-class LetterButton extends Button {
+class AltButton extends Button {
   constructor(
     text,
     width,
-    lang = 'en',
+    lang = CONSTANTS.defaultLanguage,
     altText,
-    code
+    code,
   ) {
     super(text, width, lang, altText, code);
   }
@@ -22,4 +23,4 @@ class LetterButton extends Button {
   }
 }
 
-export default LetterButton;
+export default AltButton;

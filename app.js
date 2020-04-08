@@ -1,12 +1,14 @@
-import KEY_BUTTONS from './src/keyConfig.js';
-import Button from './src/button.js';
-import AltButton from './src/altButton.js';
-import LetterButton from './src/letterButton.js';
+import * as CONSTANTS from './src/constants/constants.js'
+import KEY_BUTTONS from './src/config/keyConfig.js';
+
+import Button from './src/buttons/button.js';
+import AltButton from './src/buttons/altButton.js';
+import LetterButton from './src/buttons/letterButton.js';
 
 class Keyboard {
   constructor(textarea) {
     this.keys = {};
-    this.lang = localStorage.getItem('lang') || 'en';
+    this.lang = localStorage.getItem(CONSTANTS.localStorageLanguageKey) || CONSTANTS.defaultLanguage;
     this.textArea = textarea;
     this.capsLockState = false;
     this.shiftState = false;
@@ -61,9 +63,9 @@ class Keyboard {
 
   createKeyButton = (text, width, lang, altText, type, code) => {
     switch (type) {
-      case 'alternative':
+      case CONSTANTS.ALTERNATIVE:
         return new AltButton(text, width, lang, altText, code);
-      case 'functional':
+      case CONSTANTS.FUNCTIONAL:
         return new Button(text, width, lang, altText, code);
       default:
         return new LetterButton(text, width, lang, altText, code);
@@ -71,19 +73,30 @@ class Keyboard {
   }
 
   isCaps = (code) => {
-    return code === 'CapsLock';
+    return code === CONSTANTS.isCapsLock;
   }
 
   isShift = (code) => {
-    return ['ShiftLeft', 'ShiftRight'].includes(code);
+    return [
+      CONSTANTS.ShiftLeft,
+      CONSTANTS.ShiftRight
+    ].includes(code);
   }
 
   isCtrl = (code) => {
-    return ['ControlRight', 'ControlLeft'].includes(code);
+    return [
+      CONSTANTS.ControlLeft,
+      CONSTANTS.ControlRight
+    ].includes(code);
   }
 
   isArrow = (code) => {
-    return ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(code);
+    return [
+      CONSTANTS.isArrowDown,
+      CONSTANTS.isArrowLeft,
+      CONSTANTS.isArrowRight,
+      CONSTANTS.isArrowUp
+    ].includes(code);
   }
 
   addActive = (e) => {
@@ -102,12 +115,6 @@ class Keyboard {
             for (const key in this.keys) {
               this.keys[key].shift();
             }
-          }
-        }
-
-        if (this.isCaps(button.code)) {
-          if (!this.shiftState) {
-            button.keyNode.click();
           }
         }
 
@@ -154,6 +161,12 @@ class Keyboard {
           }
         }
 
+        if (this.isCaps(button.code)) {
+          if (!this.shiftState) {
+            button.keyNode.click();
+          }
+        }
+
         if (!this.isCaps(button.code) && !this.isShift(button.code)) {
           button.keyNode.classList.remove('active');
         }
@@ -162,7 +175,7 @@ class Keyboard {
   }
 
   handlers = {
-    Tab: () => {
+    [CONSTANTS.TAB]: () => {
       const {
         value: val,
         selectionStart: start,
@@ -173,7 +186,7 @@ class Keyboard {
 
       this.updateCursor(start + 1);
     },
-    Backspace: () => {
+    [CONSTANTS.BACKSPACE]: () => {
       const {
         value: val,
         selectionStart: start,
@@ -190,7 +203,7 @@ class Keyboard {
         this.updateCursor(start);
       }
     },
-    DEL: () => {
+    [CONSTANTS.DEL]: () => {
       const {
         value: val,
         selectionStart: start,
@@ -205,7 +218,7 @@ class Keyboard {
 
       this.updateCursor(start);
     },
-    'Caps Lock': (e) => {
+    [CONSTANTS.CapsLock]: (e) => {
       const {
         selectionStart: start
       } = this.textArea;
@@ -219,7 +232,7 @@ class Keyboard {
 
       this.updateCursor(start);
     },
-    ENTER: () => {
+    [CONSTANTS.ENTER]: () => {
       const {
         value: val,
         selectionStart: start,
@@ -230,7 +243,7 @@ class Keyboard {
 
       this.updateCursor(start + 1);
     },
-    Shift: (e) => {
+    [CONSTANTS.SHIFT]: (e) => {
       e.target.classList.toggle('active');
       this.shiftState = !this.shiftState;
 
@@ -238,7 +251,7 @@ class Keyboard {
         this.keys[button].shift();
       }
     },
-    Ctrl: () => {
+    [CONSTANTS.CTRL]: () => {
       const {
         selectionStart: start
       } = this.textArea;
@@ -248,38 +261,38 @@ class Keyboard {
 
       this.updateCursor(start);
     },
-    Alt: () => {
+    [CONSTANTS.ALT]: () => {
       const {
         selectionStart: start
       } = this.textArea;
 
       this.updateCursor(start);
     },
-    '&#8592;': () => {
+    [CONSTANTS.ArrowLeft]: () => {
       const {
         selectionStart: start
       } = this.textArea;
 
       this.updateCursor(start - 1);
     },
-    '&#8593;': () => {
+    [CONSTANTS.ArrowUp]: () => {
       this.updateCursor(0);
     },
-    '&#8594;': () => {
+    [CONSTANTS.ArrowRight]: () => {
       const {
         selectionStart: start
       } = this.textArea;
 
       this.updateCursor(start + 1);
     },
-    '&#8595;': () => {
+    [CONSTANTS.ArrowDown]: () => {
       const {
         value: val
       } = this.textArea;
 
       this.updateCursor(val.length);
     },
-    Win: () => {
+    [CONSTANTS.WIN]: () => {
       const {
         selectionStart: start
       } = this.textArea;
@@ -297,8 +310,8 @@ class Keyboard {
   }
 
   changeLanguage = () => {
-    this.lang = this.lang === 'en' ? 'ru' : 'en';
-    localStorage.setItem('lang', this.lang);
+    this.lang = this.lang === CONSTANTS.EN ? CONSTANTS.RU : CONSTANTS.EN;
+    localStorage.setItem(localStorageLanguageKey, this.lang);
     for (const button in this.keys) {
       this.keys[button].setLanguage(this.lang);
 
@@ -363,5 +376,6 @@ window.onload = () => {
   info.classList.add('info');
 
   document.body.append(textarea, keyboard.keyboardContainer, info);
+
   textarea.focus();
 };
