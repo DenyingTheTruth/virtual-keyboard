@@ -17,13 +17,13 @@ class Button {
     this.keyNode.dataset.keyValue = this.text.en;
     this.keyNode.classList.add('keyboard__key');
     switch (this.width) {
-      case 'md':
+      case CONSTANTS.WidthMD:
         this.keyNode.classList.add('keyboard__key_md');
         break;
-      case 'lg':
+      case CONSTANTS.WidthLG:
         this.keyNode.classList.add('keyboard__key_lg');
         break;
-      case 'xl':
+      case CONSTANTS.WidthXL:
         this.keyNode.classList.add('keyboard__key_xl');
         break;
       default:

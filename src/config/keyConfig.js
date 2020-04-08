@@ -8,8 +8,7 @@ const KEY_BUTTONS = [
         en: "~",
         ru: "ё",
       },
-      code: "Backquote",
-      type: "alternative",
+      code: "Backquote"
     },
     {
       text: {
@@ -20,8 +19,7 @@ const KEY_BUTTONS = [
         en: "!",
         ru: "!",
       },
-      code: "Digit1",
-      type: "alternative",
+      code: "Digit1"
     },
     {
       text: {
@@ -32,8 +30,7 @@ const KEY_BUTTONS = [
         en: "@",
         ru: '"',
       },
-      code: "Digit2",
-      type: "alternative",
+      code: "Digit2"
     },
     {
       text: {
@@ -44,8 +41,7 @@ const KEY_BUTTONS = [
         en: "#",
         ru: "№",
       },
-      code: "Digit3",
-      type: "alternative",
+      code: "Digit3"
     },
     {
       text: {
@@ -56,8 +52,7 @@ const KEY_BUTTONS = [
         en: "$",
         ru: ";",
       },
-      code: "Digit4",
-      type: "alternative",
+      code: "Digit4"
     },
     {
       text: {
@@ -68,8 +63,7 @@ const KEY_BUTTONS = [
         en: "%",
         ru: "%",
       },
-      code: "Digit5",
-      type: "alternative",
+      code: "Digit5"
     },
     {
       text: {
@@ -80,8 +74,7 @@ const KEY_BUTTONS = [
         en: "^",
         ru: ":",
       },
-      code: "Digit6",
-      type: "alternative",
+      code: "Digit6"
     },
     {
       text: {
@@ -92,8 +85,7 @@ const KEY_BUTTONS = [
         en: "&",
         ru: "?",
       },
-      code: "Digit7",
-      type: "alternative",
+      code: "Digit7"
     },
     {
       text: {
@@ -104,8 +96,7 @@ const KEY_BUTTONS = [
         en: "*",
         ru: "*",
       },
-      code: "Digit8",
-      type: "alternative",
+      code: "Digit8"
     },
     {
       text: {
@@ -116,8 +107,7 @@ const KEY_BUTTONS = [
         en: "(",
         ru: "(",
       },
-      code: "Digit9",
-      type: "alternative",
+      code: "Digit9"
     },
     {
       text: {
@@ -128,8 +118,7 @@ const KEY_BUTTONS = [
         en: ")",
         ru: ")",
       },
-      code: "Digit0",
-      type: "alternative",
+      code: "Digit0"
     },
     {
       text: {
@@ -140,8 +129,7 @@ const KEY_BUTTONS = [
         en: "_",
         ru: "_",
       },
-      code: "Minus",
-      type: "alternative",
+      code: "Minus"
     },
     {
       text: {
@@ -152,8 +140,7 @@ const KEY_BUTTONS = [
         en: "+",
         ru: "+",
       },
-      code: "Equal",
-      type: "alternative",
+      code: "Equal"
     },
     {
       text: {
@@ -248,16 +235,14 @@ const KEY_BUTTONS = [
         en: "[",
         ru: "х",
       },
-      code: "BracketLeft",
-      type: "alternative",
+      code: "BracketLeft"
     },
     {
       text: {
         en: "]",
         ru: "ъ",
       },
-      code: "BracketRight",
-      type: "alternative",
+      code: "BracketRight"
     },
     {
       text: {
@@ -269,8 +254,7 @@ const KEY_BUTTONS = [
         en: "|",
         ru: "/",
       },
-      code: "Backslash",
-      type: "alternative",
+      code: "Backslash"
     },
     {
       text: {
@@ -358,8 +342,7 @@ const KEY_BUTTONS = [
         en: ";",
         ru: "ж",
       },
-      code: "Semicolon",
-      type: "alternative",
+      code: "Semicolon"
     },
     {
       text: {
@@ -370,8 +353,7 @@ const KEY_BUTTONS = [
         en: '"',
         ru: "э",
       },
-      code: "Quote",
-      type: "alternative",
+      code: "Quote"
     },
     {
       text: {
@@ -450,8 +432,7 @@ const KEY_BUTTONS = [
         en: "<",
         ru: "б",
       },
-      code: "Comma",
-      type: "alternative",
+      code: "Comma"
     },
     {
       text: {
@@ -462,8 +443,7 @@ const KEY_BUTTONS = [
         en: ">",
         ru: "ю",
       },
-      code: "Period",
-      type: "alternative",
+      code: "Period"
     },
     {
       text: {
@@ -474,8 +454,7 @@ const KEY_BUTTONS = [
         en: "?",
         ru: ",",
       },
-      code: "Slash",
-      type: "alternative",
+      code: "Slash"
     },
     {
       text: {

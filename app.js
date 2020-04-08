@@ -2,8 +2,7 @@ import * as CONSTANTS from './src/constants/constants.js'
 import KEY_BUTTONS from './src/config/keyConfig.js';
 
 import Button from './src/buttons/button.js';
-import AltButton from './src/buttons/altButton.js';
-import LetterButton from './src/buttons/letterButton.js';
+import SymbolButton from './src/buttons/symbolButton.js';
 
 class Keyboard {
   constructor(textarea) {
@@ -63,12 +62,10 @@ class Keyboard {
 
   createKeyButton = (text, width, lang, altText, type, code) => {
     switch (type) {
-      case CONSTANTS.ALTERNATIVE:
-        return new AltButton(text, width, lang, altText, code);
       case CONSTANTS.FUNCTIONAL:
         return new Button(text, width, lang, altText, code);
       default:
-        return new LetterButton(text, width, lang, altText, code);
+        return new SymbolButton(text, width, lang, altText, code);
     }
   }
 
