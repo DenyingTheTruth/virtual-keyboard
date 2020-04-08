@@ -1,6 +1,6 @@
 import * as CONSTANTS from '../constants/constants.js';
 
-class Button {
+export default class Button {
   constructor(
     text,
     width,
@@ -55,5 +55,3 @@ class Button {
     return null;
   }
 }
-
-export default Button;

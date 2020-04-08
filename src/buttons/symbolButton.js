@@ -1,7 +1,7 @@
 import * as CONSTANTS from '../constants/constants.js';
 import Button from './button.js';
 
-class SymbolButton extends Button {
+export default class SymbolButton extends Button {
   constructor(
     text,
     width,
@@ -22,5 +22,3 @@ class SymbolButton extends Button {
     this.setText();
   }
 }
-
-export default SymbolButton;
