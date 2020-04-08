@@ -300,7 +300,7 @@ const KEY_BUTTONS = [
         en: "{",
         ru: "х",
       },
-      code: "lineBreakacketLeft",
+      code: "BracketLeft",
       type: "alternative",
     },
     {
@@ -312,7 +312,7 @@ const KEY_BUTTONS = [
         en: "}",
         ru: "ъ",
       },
-      code: "lineBreakacketRight",
+      code: "BracketRight",
       type: "alternative",
     },
     {
