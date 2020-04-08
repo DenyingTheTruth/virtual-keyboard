@@ -308,7 +308,7 @@ class Keyboard {
 
   changeLanguage = () => {
     this.lang = this.lang === CONSTANTS.EN ? CONSTANTS.RU : CONSTANTS.EN;
-    localStorage.setItem(localStorageLanguageKey, this.lang);
+    localStorage.setItem(CONSTANTS.localStorageLanguageKey, this.lang);
     for (const button in this.keys) {
       this.keys[button].setLanguage(this.lang);
 
